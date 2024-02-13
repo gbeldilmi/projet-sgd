@@ -97,9 +97,11 @@ Un objet de la collection d'avis contiendrait les champs suivants:
   - `source`: source de l'avis
   - `auteur`: auteur de l'avis
 
+### Mises en liens
+
 Pour des raisons de simplicité, les références aux objets de la collection de `films` se feront sous la forme de l'identifiant de l'objet concerné (`ObjectId` généré automatiquement par MongoDB dans le champs `_id` de chaque objet), et non sous la forme d'un objet complet afin de limiter la redondance des données, faciliter la mise à jour des données et éviter les problèmes de cohérence des données.
 
-### Mises en liens
+En effet, si on stockait l'objet complet de la collection de `films` dans chaque document de la collection d'`avis`, cela nous obligerait à mettre à jour tous les documents de la collection d'`avis` à chaque modification d'un film, ce qui serait coûteux en termes de performances et de ressources et pourrait entraîner des problèmes de cohérence des données dans le cas où la valeur d'un champ d'un film serait erronée.
 
 ### Collections secondaires
 
