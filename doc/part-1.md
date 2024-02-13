@@ -103,10 +103,12 @@ Pour des raisons de simplicité, les références aux objets de la collection de
 
 ### Collections secondaires
 
-- Collections servant à faciliter la recherche au sein de la collection de `films` (ces collections contiennent toutes les valeurs possibles pour un champ donné dans la collection de films, par exemple, les genres, les réalisateurs, les acteurs, etc.):
+Afin de faciliter la recherche de films ou de cinémas par rapport à des critères spécifiques (par exemple, tous les films d'un réalisateur donné, tous les films d'un genre donné, tous les cinémas d'une ville donnée, etc.), nous utiliseront des collections secondaires pour stocker l'ensemble des valeurs possibles pour ces critères (par exemple, tous les genres de films, etc.). Ces collections secondaires seront mises à jour à chaque ajout, modification ou suppression d'un film ou d'un cinéma.
+
+- Collections secondaires liées à la collection de `films`:
   - Collections de `realisateurs`
   - Collections d'`acteurs`
   - Collections de `genres`
-
-- Collections servant à faciliter la recherche au sein de la collection de `cinemas` (ces collections contiennent toutes les valeurs possibles pour un champ donné dans la collection de cinémas, par exemple, les villes, etc.):
+- Collection secondaire liée à la collection de `cinemas` :
   - Collections de `villes`
+
