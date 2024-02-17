@@ -60,13 +60,11 @@ Un objet de la collection d'avis contiendrait les champs suivants:
 - la source de l'avis
 - l'auteur de l'avis
 
-### Modélisation UML
-
-![Modélisation UML](./uml.png)
-
 ## Conception de la base de données
 
 ### Données primaires
+
+On a donc les collections suivantes:
 
 - Collections de `films`: cette collection répertorie les films disponibles dans la base de données. Chaque document de cette collection contient les champs suivants:
   - `titre`: titre du film
@@ -103,14 +101,25 @@ Pour des raisons de simplicité, les références aux objets de la collection de
 
 En effet, si on stockait l'objet complet de la collection de `films` dans chaque document de la collection d'`avis`, cela nous obligerait à mettre à jour tous les documents de la collection d'`avis` à chaque modification d'un film, ce qui serait coûteux en termes de performances et de ressources et pourrait entraîner des problèmes de cohérence des données dans le cas où la valeur d'un champ d'un film serait erronée.
 
-### Collections secondaires
+### Cas des realisateurs et des acteurs de films et mises en perspectives
 
-Afin de faciliter la recherche de films ou de cinémas par rapport à des critères spécifiques (par exemple, tous les films d'un réalisateur donné, tous les films d'un genre donné, tous les cinémas d'une ville donnée, etc.), nous utiliseront des collections secondaires pour stocker l'ensemble des valeurs possibles pour ces critères (par exemple, tous les genres de films, etc.). Ces collections secondaires seront mises à jour à chaque ajout, modification ou suppression d'un film ou d'un cinéma.
+Pour les champs `realisateurs` et `acteurs` de la collection de `films`, on pourrait stocker les noms des réalisateurs et des acteurs sous forme de chaînes de caractères. Cependant, cela pourrait entraîner des problèmes de cohérence des données dans le cas où un nom de réalisateur ou d'acteur serait mal orthographié, sans oublier que deux réalisateurs ou acteurs différents pourraient avoir le même nom.
 
-- Collections secondaires liées à la collection de `films`:
-  - Collections de `realisateurs`
-  - Collections d'`acteurs`
-  - Collections de `genres`
-- Collection secondaire liée à la collection de `cinemas` :
-  - Collections de `villes`
+Pour éviter ces problèmes, on pourrait stocker les réalisateurs et les acteurs sous forme de références à des documents de collections de `personnes`. Cette solution permettrait de stocker des informations supplémentaires sur les réalisateurs et les acteurs (par exemple, leur date de naissance, leur nationalité, etc.) et de faire des recherches sur ces derniers. De plus, cela permettrait aussi de gérer les cas où un réalisateur ait joué dans un film ou un acteur ait réalisé un film.
 
+Ainsi, on pourrait avoir la collection de `personnes` suivante:
+
+- `nom`: nom de la personne
+- `prenom`: prénom de la personne
+- `date_naissance`: date de naissance de la personne
+- `nationalite`: nationalité de la personne
+
+Chaque référence à un réalisateur ou à un acteur dans un document de la collection de `films` serait donc sous la forme de l'identifiant de l'objet concerné dans la collection de `personnes`.
+
+Avec cette même logique, on pourrait aussi avoir des collections `genres_films` et `villes` pour stocker respectivement les genres de films et les villes où un cinéma est implanté. De cette manière, la collection de `genres_films` contiendrait des documents avec comme seuls champs `nom_genre` et `description`, et la collection de `villes` contiendrait uniquement le champ `nom_ville` (ainsi que le champ `_id` généré automatiquement par MongoDB).
+
+De plus, les mises à jour des documents des collections de `personnes`, `genres_films` et `villes` seraient moins fréquentes que celles des documents de la collection de `films` et `cinemas`, donc leurs mises en cache serait pertinente.
+
+### Modélisation UML
+
+![Modélisation UML](./uml.png)
