@@ -122,4 +122,6 @@ De plus, les mises à jour des documents des collections de `personnes`, `genres
 
 ### Modélisation UML
 
+La modélisation UML de la base de données sera donc la suivante:
+
 ![Modélisation UML](./uml.png)
