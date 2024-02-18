@@ -118,11 +118,75 @@ Avec cette même logique, on pourrait aussi avoir des collections `genres_films`
 
 De plus, les mises à jour des documents des collections de `personnes`, `genres_films` et `villes` seraient moins fréquentes que celles des documents de la collection de `films` et `cinemas`, donc leurs mises en cache serait pertinente.
 
-### Modélisation UML
+### Modélisation UML et schéma de la base de données
 
 La modélisation UML de la base de données sera donc la suivante:
 
-![Modélisation UML](./uml.png)
+```
++--------------------------+          +--------------------------+                  +--------------------------+
+| Genre_film               |<----+    | Personne                 |                  | Avis                     |
++--------------------------+     |    +--------------------------+                  +--------------------------+
+| + nom_genre: String      |     |    | + nom: String            |<------+     film | + note: Int              |
++--------------------------+     |    | + prenom: String         |<---+  |        1 | + commentaire: String    |
+                                 |    +--------------------------+    |  |  +-------| + date_publication: Date |
+                                 |                                    |  |  |       | + source: String         |
+                                 | genres                             |  |  |       | + auteur: String         |
+                                 | 0..*                     acteurs   |  |  |       +--------------------------+
+                               +--------------------------+ 0..*      |  |  |
+    +------------------------->| Film                     |-----------+  |  |       +--------------------------+
+    | film                     +--------------------------+              |  |       | Ville                    |
+    | 1                        | + titre: String          | realisateurs |  |       +--------------------------+
++--------------------------+   | + duree: Timestamp       | 1..*         |  |   +-->| + nom_ville: String      |
+| Film_diffuse             |   | + date_sortie: Date      |--------------+  |   |   +--------------------------+
++--------------------------+   | + synopsis: String       |<----------------+   |
+| + date_diffusion: Date   |   +--------------------------+                     | ville
+| + nombre_entrees: Long   |                                                    | 1
++--------------------------+   +--------------------------+                 +--------------------------+
+         ^ 0..*                | Salle                    |                 | Cinema                   |
+         |      films_diffuses +--------------------------+          salles +--------------------------+
+         |                   1 | + nom_salle: String      | 0..*          1 | + nom: String            |
+         +--------------------⯁| + nombre_places: Long    |<--------------⯁| + adresse: String        |
+                               +--------------------------+                 +--------------------------+
+```
+
+Et le schéma de la base de données sera le suivant:
+- Collection `films`:
+  - `_id`: *ObjectId*
+  - `titre`: *String*
+  - `duree`: *Timestamp*
+  - `date_sortie`: *Date*
+  - `synopsis`: *String*
+  - `realisateurs`: *ObjectId[]*
+  - `acteurs`: *ObjectId[]*
+  - `genres`: *ObjectId[]*
+- Collection `genres_films`:
+  - `_id`: *ObjectId*
+  - `nom_genre`: *String*
+- Collection `personnes`:
+  - `_id`: *ObjectId*
+  - `nom`: *String*
+  - `prenom`: *String*
+- Collection `cinemas`:
+  - `nom`: *String*
+  - `adresse`: *String*
+  - `ville`: *ObjectId*
+  - `salles`:
+    - `nom_salle`: *String*
+    - `nombre_places`: *Long*
+    - `films_diffuses`:
+      - `film`: *ObjectId*
+      - `date_diffusion`: *Date*
+      - `nombre_entrees`: *Long*
+- Collection `villes`:
+  - `_id`: *ObjectId*
+  - `nom_ville`: *String*
+- Collection `avis`:
+  - `film`: *ObjectId*
+  - `note`: *Int*
+  - `commentaire`: *String*
+  - `date_publication`: *Date*
+  - `source`: *String*
+  - `auteur`: *String*
 
 ### Extensions possibles
 
