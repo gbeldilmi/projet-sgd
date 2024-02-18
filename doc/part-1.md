@@ -111,12 +111,10 @@ Ainsi, on pourrait avoir la collection de `personnes` suivante:
 
 - `nom`: nom de la personne
 - `prenom`: prénom de la personne
-- `date_naissance`: date de naissance de la personne
-- `nationalite`: nationalité de la personne
 
 Chaque référence à un réalisateur ou à un acteur dans un document de la collection de `films` serait donc sous la forme de l'identifiant de l'objet concerné dans la collection de `personnes`.
 
-Avec cette même logique, on pourrait aussi avoir des collections `genres_films` et `villes` pour stocker respectivement les genres de films et les villes où un cinéma est implanté. De cette manière, la collection de `genres_films` contiendrait des documents avec comme seuls champs `nom_genre` et `description`, et la collection de `villes` contiendrait uniquement le champ `nom_ville` (ainsi que le champ `_id` généré automatiquement par MongoDB).
+Avec cette même logique, on pourrait aussi avoir des collections `genres_films` et `villes` pour stocker respectivement les genres de films et les villes où un cinéma est implanté. De cette manière, la collection de `genres_films` contiendrait des documents avec comme seul champ `nom_genre`, et la collection de `villes` contiendrait uniquement le champ `nom_ville` (ainsi que le champ `_id` généré automatiquement par MongoDB).
 
 De plus, les mises à jour des documents des collections de `personnes`, `genres_films` et `villes` seraient moins fréquentes que celles des documents de la collection de `films` et `cinemas`, donc leurs mises en cache serait pertinente.
 
@@ -125,3 +123,10 @@ De plus, les mises à jour des documents des collections de `personnes`, `genres
 La modélisation UML de la base de données sera donc la suivante:
 
 ![Modélisation UML](./uml.png)
+
+### Extensions possibles
+
+Pour enrichir la base de données, on pourrait ajouter différentes informations supplémentaires, telles que:
+
+- des compléments d'informations sur les personnes (réalisateurs, acteurs, etc.) comme leur date de naissance, leur nationalité, etc.
+- des informations sur les genres de films (description, etc.)
