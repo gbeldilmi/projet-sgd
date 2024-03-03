@@ -56,7 +56,6 @@ Un objet de la collection d'avis contiendrait les champs suivants:
 - une référence au film concerné
 - une note sur le film
 - le commentaire textuel sur le film
-- la date de publication de l'avis
 - la source de l'avis
 - l'auteur de l'avis
 
@@ -91,7 +90,6 @@ On a donc les collections suivantes:
   - `film`: référence au film concerné
   - `note`: note sur le film
   - `commentaire`: commentaire textuel sur le film
-  - `date_publication`: date de publication de l'avis
   - `source`: source de l'avis
   - `auteur`: auteur de l'avis
 
@@ -128,18 +126,18 @@ La modélisation UML de la base de données sera donc la suivante:
 +--------------------------+     |    +--------------------------+                  +--------------------------+
 | + nom_genre: String      |     |    | + nom: String            |<------+     film | + note: Int              |
 +--------------------------+     |    | + prenom: String         |<---+  |        1 | + commentaire: String    |
-                                 |    +--------------------------+    |  |  +-------| + date_publication: Date |
-                                 |                                    |  |  |       | + source: String         |
-                                 | genres                             |  |  |       | + auteur: String         |
-                                 | 0..*                     acteurs   |  |  |       +--------------------------+
+                                 |    +--------------------------+    |  |  +-------| + source: String         |
+                                 |                                    |  |  |       | + auteur: String         |
+                                 | genres                             |  |  |       +--------------------------+
+                                 | 0..*                     acteurs   |  |  |
                                +--------------------------+ 0..*      |  |  |
     +------------------------->| Film                     |-----------+  |  |       +--------------------------+
     | film                     +--------------------------+              |  |       | Ville                    |
     | 1                        | + titre: String          | realisateurs |  |       +--------------------------+
-+--------------------------+   | + duree: Timestamp       | 1..*         |  |   +-->| + nom_ville: String      |
-| Film_diffuse             |   | + date_sortie: Date      |--------------+  |   |   +--------------------------+
++--------------------------+   | + duree: Int             | 1..*         |  |   +-->| + nom_ville: String      |
+| Film_diffuse             |   | + date_sortie: String    |--------------+  |   |   +--------------------------+
 +--------------------------+   | + synopsis: String       |<----------------+   |
-| + date_diffusion: Date   |   +--------------------------+                     | ville
+| + date_diffusion: String |   +--------------------------+                     | ville
 | + nombre_entrees: Long   |                                                    | 1
 +--------------------------+   +--------------------------+                 +--------------------------+
          ^ 0..*                | Salle                    |                 | Cinema                   |
@@ -153,8 +151,8 @@ Et le schéma de la base de données sera le suivant:
 - Collection `films`:
   - `_id`: *ObjectId*
   - `titre`: *String*
-  - `duree`: *Timestamp*
-  - `date_sortie`: *Date*
+  - `duree`: *Int* (en minutes)
+  - `date_sortie`: *String* (format: "YYYY-MM-DD HH:MM")
   - `synopsis`: *String*
   - `realisateurs`: *ObjectId[]*
   - `acteurs`: *ObjectId[]*
@@ -175,7 +173,7 @@ Et le schéma de la base de données sera le suivant:
     - `nombre_places`: *Long*
     - `films_diffuses`:
       - `film`: *ObjectId*
-      - `date_diffusion`: *Date*
+      - `date_diffusion`: *String* (format: "YYYY-MM-DD HH:MM")
       - `nombre_entrees`: *Long*
 - Collection `villes`:
   - `_id`: *ObjectId*
@@ -184,9 +182,10 @@ Et le schéma de la base de données sera le suivant:
   - `film`: *ObjectId*
   - `note`: *Int*
   - `commentaire`: *String*
-  - `date_publication`: *Date*
   - `source`: *String*
   - `auteur`: *String*
+
+N.B.: Les champs référents une date sont stockés sous forme de chaînes de caractères au format "YYYY-MM-DD HH:MM" afin de simplifier la manipulation des dates et heures dans les requêtes.
 
 ### Extensions possibles
 
