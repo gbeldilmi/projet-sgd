@@ -1,7 +1,8 @@
 import mongo2
 
-c, db = mongo2.connect_mongo2();
+c, db = mongo2.connect_mongo2(); # Connexion à la base de données
 
+# Suppression des collections existantes
 db.cinemas.drop();
 db.villes.drop();
 db.avis.drop();
@@ -50,7 +51,7 @@ db.genres_films.insert_many([
     "genre": "Sport"
   }
 ]);
-gf = db.genres_films.find();
+gf = db.genres_films.find(); # Mise en cache
 
 db.personnes.insert_many([
   {
