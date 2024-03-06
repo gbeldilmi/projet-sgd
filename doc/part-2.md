@@ -22,7 +22,6 @@ db.cinemas.count();
 Pour obtenir tous les avis d'un film (dont une partie serait vue depuis la page de présentation du film en question), nous pourrions effectuer la requête suivante:
 
 ```javascript
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 f = db.films.findOne({titre: "Interstellar"});
 liste_avis = db.avis.find({film: f["_id"]});
 ```
@@ -50,34 +49,41 @@ note_g_films = db.note_g.aggregate([
 ### Les 10 films les plus diffusés
 
 ```javascript
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 db.cinemas.aggregate([
   { $unwind: "$salles" },
   { $unwind: "$salles.films_diffuses" },
   { $group: { _id: "$salles.films_diffuses.film", count: { $sum: 1 } } },
   { $sort: { count: -1 } },
-  { $limit: 10 }
+  { $limit: 10 },
+  { $lookup: { from: "films", localField: "_id", foreignField: "_id", as: "film" } },
+  { $unwind: "$film" },
+  { $project: { _id: 0, film: "$film.titre", count: "$count" } }
 ]);
 ```
 
-### Cinémas diffusant le plus de films les mieux notés
+### Les noms des 10 cinémas diffusant le plus de films les mieux notés
 
 ```javascript
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-```
-
-### Les 10 genres les plus appréciés
-
-```javascript
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-db.note_g.aggregate([
-  { $lookup: { from: "films", localField: 
+db.cinemas.aggregate([
+  { $unwind: "$salles" },
+  { $unwind: "$salles.films_diffuses" },
+  { $lookup: { from: "films", localField: "salles.films_diffuses.film", foreignField: "_id", as: "film" } },
+  { $unwind: "$film" },
+  { $lookup: { from: "note_g", localField: "film._id", foreignField: "_id", as: "note" } },
+  { $unwind: "$note" },
+  { $match: { "note.value": { $gte: 4 } } },
+  { $group: { _id: "$_id", count: { $sum: 1 } } },
+  { $sort: { count: -1 } },
+  { $limit: 10 },
+  { $lookup: { from: "cinemas", localField: "_id", foreignField: "_id", as: "cinema" } },
+  { $unwind: "$cinema" },
+  { $project: { _id: 0, cinema: "$cinema.nom", count: "$count" } }
 ]);
 ```
 
 ## Ajouts à la base de données
 
-Les ajouts à la base de données se feront de manière manuelle, en utilisant les méthodes `insert` et `insertMany` de MongoDB. Les données à ajouter devront être formatées correctement et cohérentes avec les données déjà présentes dans la base de données. 
+Les ajouts à la base de données se feront de manière manuelle, en utilisant les méthodes `insert` et `insertMany` de MongoDB. Les données à ajouter devront être formatées correctement et cohérentes avec les données déjà présentes dans la base de données.
 
 Si plusieurs collections sont concernées par l'ajout, il faudra veiller à mettre à jour les collections dans le bon ordre, en commençant par les collections primaires et en finissant par les collections qui font référence à ces collections primaires afin de garantir le bon référencement des éléments ajoutés.
 
