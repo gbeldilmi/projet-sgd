@@ -30,6 +30,16 @@ for avis in liste_avis_interstellar:
 print("####################################################################################################");
 print("####################################################################################################");
 
+# Tous les films d'un genre
+print("Tous les films d'un genre (Science-fiction)");
+g_sf = db.genres_films.find_one({"genre": "Sci-Fi"});
+liste_films_sf = db.films.find({"genres": g_sf["_id"]});
+for film in liste_films_sf:
+    print(film);
+
+print("####################################################################################################");
+print("####################################################################################################");
+
 # Note d'appréciation générale d'un film avec MapReduce
 print("Note d'appréciation générale d'un film avec MapReduce");
 map = "function() { emit(this.film, this.note); }";
