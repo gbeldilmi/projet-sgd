@@ -147,32 +147,32 @@ Une fois les erreurs corrigées, nous pourrons réintégrer les éléments corri
 
 ```javascript
 // dans le même ordre que pour les ajouts...
-e_genres_films = db.errors.match({type: "genres_films"});
+e_genres_films = db.errors.find({type: "genres_films"});
 e_genres_films.forEach(function(e) {
   db.genres_films.insert(e.element);
   db.errors.remove(e);
 });
-e_personnes = db.errors.match({type: "personnes"});
+e_personnes = db.errors.find({type: "personnes"});
 e_personnes.forEach(function(e) {
   db.personnes.insert(e.element);
   db.errors.remove(e);
 });
-e_films = db.errors.match({type: "films"});
+e_films = db.errors.find({type: "films"});
 e_films.forEach(function(e) {
   db.films.insert(e.element);
   db.errors.remove(e);
 });
-e_avis = db.errors.match({type: "avis"});
+e_avis = db.errors.find({type: "avis"});
 e_avis.forEach(function(e) {
   db.avis.insert(e.element);
   db.errors.remove(e);
 });
-e_villes = db.errors.match({type: "villes"});
+e_villes = db.errors.find({type: "villes"});
 e_villes.forEach(function(e) {
   db.villes.insert(e.element);
   db.errors.remove(e);
 });
-e_cinemas = db.errors.match({type: "cinemas"});
+e_cinemas = db.errors.find({type: "cinemas"});
 e_cinemas.forEach(function(e) {
   db.cinemas.insert(e.element);
   db.errors.remove(e);
