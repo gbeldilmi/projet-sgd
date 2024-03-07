@@ -112,7 +112,7 @@ Ainsi, on pourrait avoir la collection de `personnes` suivante:
 
 Chaque référence à un réalisateur ou à un acteur dans un document de la collection de `films` serait donc sous la forme de l'identifiant de l'objet concerné dans la collection de `personnes`.
 
-Avec cette même logique, on pourrait aussi avoir des collections `genres_films` et `villes` pour stocker respectivement les genres de films et les villes où un cinéma est implanté. De cette manière, la collection de `genres_films` contiendrait des documents avec comme seul champ `nom_genre`, et la collection de `villes` contiendrait uniquement le champ `nom_ville` (ainsi que le champ `_id` généré automatiquement par MongoDB).
+Avec cette même logique, on pourrait aussi avoir des collections `genres_films` et `villes` pour stocker respectivement les genres de films et les villes où un cinéma est implanté. De cette manière, la collection de `genres_films` contiendrait des documents avec comme seul champ `genre`, et la collection de `villes` contiendrait uniquement le champ `nom_ville` (ainsi que le champ `_id` généré automatiquement par MongoDB).
 
 De plus, les mises à jour des documents des collections de `personnes`, `genres_films` et `villes` seraient moins fréquentes que celles des documents de la collection de `films` et `cinemas`, donc leurs mises en cache serait pertinente.
 
@@ -124,7 +124,7 @@ La modélisation UML de la base de données sera donc la suivante:
 +--------------------------+          +--------------------------+                  +--------------------------+
 | Genre_film               |<----+    | Personne                 |                  | Avis                     |
 +--------------------------+     |    +--------------------------+                  +--------------------------+
-| + nom_genre: String      |     |    | + nom: String            |<------+     film | + note: Int              |
+| + genre: String          |     |    | + nom: String            |<------+     film | + note: Int              |
 +--------------------------+     |    | + prenom: String         |<---+  |        1 | + commentaire: String    |
                                  |    +--------------------------+    |  |  +-------| + source: String         |
                                  |                                    |  |  |       | + auteur: String         |
@@ -138,12 +138,12 @@ La modélisation UML de la base de données sera donc la suivante:
 | Film_diffuse             |   | + date_sortie: String    |--------------+  |   |   +--------------------------+
 +--------------------------+   | + synopsis: String       |<----------------+   |
 | + date_diffusion: String |   +--------------------------+                     | ville
-| + nombre_entrees: Long   |                                                    | 1
+| + nombre_entrees: Int    |                                                    | 1
 +--------------------------+   +--------------------------+                 +--------------------------+
          ^ 0..*                | Salle                    |                 | Cinema                   |
          |      films_diffuses +--------------------------+          salles +--------------------------+
-         |                   1 | + nom_salle: String      | 0..*          1 | + nom: String            |
-         +--------------------⯁| + nombre_places: Long    |<--------------⯁| + adresse: String        |
+         |                   1 | + nom: String            | 0..*          1 | + nom: String            |
+         +--------------------⯁| + nombre_places: Int     |<--------------⯁| + adresse: String        |
                                +--------------------------+                 +--------------------------+
 ```
 
@@ -159,7 +159,7 @@ Et le schéma de la base de données sera le suivant:
   - `genres`: *ObjectId[]*
 - Collection `genres_films`:
   - `_id`: *ObjectId*
-  - `nom_genre`: *String*
+  - `genre`: *String*
 - Collection `personnes`:
   - `_id`: *ObjectId*
   - `nom`: *String*
@@ -169,12 +169,12 @@ Et le schéma de la base de données sera le suivant:
   - `adresse`: *String*
   - `ville`: *ObjectId*
   - `salles`:
-    - `nom_salle`: *String*
-    - `nombre_places`: *Long*
+    - `nom`: *String*
+    - `nombre_places`: *Int*
     - `films_diffuses`:
       - `film`: *ObjectId*
       - `date_diffusion`: *String* (format: "YYYY-MM-DD HH:MM")
-      - `nombre_entrees`: *Long*
+      - `nombre_entrees`: *Int*
 - Collection `villes`:
   - `_id`: *ObjectId*
   - `nom_ville`: *String*
