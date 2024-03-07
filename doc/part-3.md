@@ -10,4 +10,6 @@
 
 ## Traitements des erreurs
 
-[cf. `errors.py`](../src/errors.py)
+[cf. `detect_errors.py`](../src/detect_errors.py)
+
+[cf. `insert_errors.py`](../src/insert_errors.py)
