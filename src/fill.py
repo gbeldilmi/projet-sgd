@@ -3,6 +3,7 @@ import mongo2
 c, db = mongo2.connect_mongo2(); # Connexion à la base de données
 
 # Suppression des collections existantes
+db.erreurs.drop();
 db.cinemas.drop();
 db.villes.drop();
 db.avis.drop();
@@ -1171,7 +1172,7 @@ db.cinemas.insert_many([
     "salles": [
       {
         "nom": "Salle 1",
-        "nb_places": 200,
+        "nombre_places": 400,
         "films_diffuses": [
           {
             "film": f[0]["_id"],
@@ -1221,7 +1222,7 @@ db.cinemas.insert_many([
         ]
       }, {
         "nom": "Salle 2",
-        "nb_places": 150,
+        "nombre_places": 300,
         "films_diffuses": [
           {
             "film": f[0]["_id"],
@@ -1278,7 +1279,7 @@ db.cinemas.insert_many([
       "salles": [
         {
           "nom": "Salle 1",
-          "nb_places": 180,
+          "nombre_places": 500,
           "films_diffuses": [
             {
               "film": f[11]["_id"],
@@ -1359,7 +1360,7 @@ db.cinemas.insert_many([
         },
         {
           "nom": "Salle 2",
-          "nb_places": 170,
+          "nombre_places": 250,
           "films_diffuses": [
             {
               "film": f[11]["_id"],
@@ -1446,7 +1447,7 @@ db.cinemas.insert_many([
       "salles": [
         {
           "nom": "Salle 1",
-          "nb_places": 190,
+          "nombre_places": 220,
           "films_diffuses": [
             {
               "film": f[8]["_id"],
@@ -1527,7 +1528,7 @@ db.cinemas.insert_many([
         },
         {
           "nom": "Salle 2",
-          "nb_places": 200,
+          "nombre_places": 300,
           "films_diffuses": [
             {
               "film": f[11]["_id"],
@@ -1615,7 +1616,7 @@ db.cinemas.insert_many([
       "salles": [
         {
           "nom": "Salle 1",
-          "nb_places": 170,
+          "nombre_places": 400,
           "films_diffuses": [
             {
               "film": f[1]["_id"],
@@ -1696,7 +1697,7 @@ db.cinemas.insert_many([
         },
         {
           "nom": "Salle 2",
-          "nb_places": 180,
+          "nombre_places": 250,
           "films_diffuses": [
             {
               "film": f[1]["_id"],
