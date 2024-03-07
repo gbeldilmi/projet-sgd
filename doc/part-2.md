@@ -28,6 +28,17 @@ liste_avis = db.avis.find({film: f["_id"]});
 
 Cette requête fait partie des requêtes les plus simples que nous pourrions effectuer sur la base de données. Elle consiste à rechercher l'identifiant du film dans la collection `films` puis à rechercher tous les avis qui font référence à cet identifiant dans la collection `avis`. Le résultat de cette requête serait une liste d'avis pour le film "Interstellar".
 
+### Tous les films d'un genre
+
+Pour obtenir tous les films d'un genre (dont une partie serait vue depuis la page de présentation du genre en question), nous pourrions effectuer la requête suivante:
+
+```javascript
+g_sf = db.genres_films.findOne({genre: "Sci-Fi"});
+liste_films_sf = db.films.find({genres: g_sf["_id"]});
+```
+
+Cette requête consiste à rechercher l'identifiant du genre dans la collection `genres_films` puis à rechercher tous les films qui font référence à cet identifiant dans la collection `films`. Le résultat de cette requête serait une liste de films de genre "Sci-Fi". Par la suite, nous pourrions affiner notre recherche avec d'autres critères (ex: les films les mieux notés, les films les plus diffusés, etc.) que nous détaillerons dans les sections suivantes.
+
 ### Note d'appréciation générale d'un film avec MapReduce
 
 Pour obtenir la note d'appréciation générale d'un film, nous pourrions utiliser la méthode `mapReduce` de MongoDB pour effectuer un calcul de moyenne des notes d'appréciation d'un film. Voici un exemple de requête pour obtenir la note d'appréciation générale de tous les films:
