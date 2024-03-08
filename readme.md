@@ -1,6 +1,7 @@
 # Projet Systèmes de Gestion de Documents
 
-[Sujet](doc/sujet.pdf)
+- [Sujet](doc/sujet.pdf)
+- [Rapport](doc/rapport.pdf)
 
 ## Table des matières
 
